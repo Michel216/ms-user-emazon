@@ -12,11 +12,11 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class AuthenticationRequest {
-    @NotNull
+    @NotNull(message = DomainConstants.EMPTY_EMAIL_MESSAGE)
     @Pattern(regexp = DomainConstants.EMAIL_REGEX_RFC5322, message = DomainConstants.NOT_VALID_EMAIL_MESSAGE)
     private String email;
 
-    @NotNull
+    @NotNull(message = DomainConstants.EMPTY_EMAIL_MESSAGE)
     @Size(min = 8, max = 64, message = DomainConstants.OUT_OF_BOUNDS_PASSWORD_MESSAGE)
     private String password;
 }

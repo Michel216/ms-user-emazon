@@ -27,7 +27,12 @@ public class UserUseCase implements UserServicePort {
 
     @Override
     public void createWarehouseAssistant(User user) {
-        user.setRole(new Role(null, RoleName.WAREHOUSE_ASSISTANT));
+        user.setRole(new Role(1L, RoleName.WAREHOUSE_ASSISTANT));
         createUser(user);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userPersistencePort.getUserByEmail(email);
     }
 }

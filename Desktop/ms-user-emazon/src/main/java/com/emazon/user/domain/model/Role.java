@@ -4,11 +4,11 @@ import com.emazon.user.domain.utils.RoleName;
 
 public class Role {
     private Long id;
-    private RoleName name;
+    private RoleName roleName;
 
-    public Role(Long id, RoleName name) {
+    public Role(Long id, RoleName roleName) {
         this.id = id;
-        this.name = name;
+        this.roleName = roleName;
     }
 
     public Role() {
@@ -22,11 +22,11 @@ public class Role {
         this.id = id;
     }
 
-    public RoleName getName() {
-        return name;
+    public RoleName getRoleName() {
+        return roleName;
     }
 
-    public void setName(RoleName name) {
-        this.name = name;
+    public void setRoleName(RoleName roleName) {
+        this.roleName = roleName;
     }
 }

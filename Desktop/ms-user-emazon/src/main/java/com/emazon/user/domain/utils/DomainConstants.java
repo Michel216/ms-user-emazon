@@ -26,7 +26,7 @@ public class DomainConstants {
 
 
     public static final String EMAIL_REGEX_RFC5322 = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*"
-                + "@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+            + "@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
     public static final String PHONE_NUMBER_REGEX = "^(\\+\\d{2})?\\d{10}$";
     public static final String IDENTITY_DOCUMENT_REGEX = "^\\d{6,16}";
 
@@ -55,4 +55,5 @@ public class DomainConstants {
     public static final String NOT_NUMERIC_IDENTITY_DOCUMENT_MESSAGE = "Identity document must be numerical only";
 
     public static final String USER_WITH_EMAIL_NOT_FOUND_MESSAGE = "User with email '%s' not found";
+    public static final String INVALID_TOKEN_MESSAGE = "Authorization token is invalid";
 }

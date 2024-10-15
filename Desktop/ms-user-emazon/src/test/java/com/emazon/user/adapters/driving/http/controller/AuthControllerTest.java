@@ -1,9 +1,13 @@
 package com.emazon.user.adapters.driving.http.controller;
 
+import com.emazon.user.adapters.driving.http.dto.request.AuthenticationRequest;
+import com.emazon.user.adapters.driving.http.dto.request.AuthorizationRequest;
 import com.emazon.user.adapters.driving.http.dto.request.UserRequest;
+import com.emazon.user.adapters.driving.http.dto.response.AuthenticationResponse;
+import com.emazon.user.adapters.driving.http.dto.response.AuthorizationResponse;
 import com.emazon.user.adapters.driving.http.dto.response.RegisterResponse;
-import com.emazon.user.adapters.driving.http.service.UserService;
-import com.emazon.user.adapters.driving.http.utils.JsonParser;
+import com.emazon.user.adapters.driving.http.service.AuthenticationServices;
+import com.emazon.user.adapters.driving.http.utils.JsonConversionException;
 import com.emazon.user.configuration.security.jwt.JwtService;
 import com.emazon.user.domain.utils.DomainConstants;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +42,7 @@ class AuthControllerTest {
     private JwtService jwtService;
 
     @MockBean
-    private UserService userService;
+    private AuthenticationServices authenticationServices;
 
 
     @Autowired
@@ -57,13 +61,47 @@ class AuthControllerTest {
     void registerWarehouseAssistantIsOk() throws Exception {
         UserRequest userRequest = new UserRequest("name", "lastname", "0000000000", LocalDateTime.of(1, 1, 1, 1, 1, 1), "+555555555555", "email@email.com", "password");
         RegisterResponse response = RegisterResponse.builder().status(DomainConstants.WAREHOUSE_ASSISTANT_REGISTERED_MESSAGE).build();
-        when(userService.createWarehouseAssistant(any())).thenReturn(response);
+        when(authenticationServices.createWarehouseAssistant(any())).thenReturn(response);
         this.mockMvc.perform(post("/auth/register/warehouse-assistant")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonParser.toJson(userRequest)))
-                .andExpect(content().json(JsonParser.toJson(response)))
+                        .content(JsonConversionException.toJson(userRequest)))
+                .andExpect(content().json(JsonConversionException.toJson(response)))
                 .andExpect(status().isCreated());
-        verify(userService).createWarehouseAssistant(any());
+        verify(authenticationServices).createWarehouseAssistant(any());
 
+    }
+
+    @Test
+    void login() throws Exception {
+        AuthenticationRequest authenticationRequest = AuthenticationRequest.builder()
+                .email("email@email.com")
+                .password("password")
+                .build();
+        AuthenticationResponse mockResponse = AuthenticationResponse.builder()
+                .token("token").build();
+        when(authenticationServices.login(authenticationRequest)).thenReturn(mockResponse);
+        this.mockMvc.perform(post("/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonConversionException.toJson(authenticationRequest)))
+                .andExpect(status().isAccepted());
+        verify(authenticationServices).login(any());
+    }
+
+    @Test
+    void authorize() throws Exception {
+        AuthorizationRequest request = AuthorizationRequest.builder()
+                .token("token").build();
+        AuthorizationResponse mockResponse = AuthorizationResponse.builder()
+                .authorized(true)
+                .email("email@email.com")
+                .role("ROLE")
+                .build();
+        when(authenticationServices.authorize(request)).thenReturn(mockResponse);
+        this.mockMvc.perform(post("/auth/authorize")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonConversionException.toJson(request)))
+                .andExpect(content().json(JsonConversionException.toJson(mockResponse)))
+                .andExpect(status().isAccepted());
+        verify(authenticationServices).authorize(request);
     }
 }

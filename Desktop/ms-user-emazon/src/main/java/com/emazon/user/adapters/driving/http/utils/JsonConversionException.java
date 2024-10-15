@@ -1,12 +1,12 @@
 package com.emazon.user.adapters.driving.http.utils;
 
-import com.emazon.user.adapters.driving.http.utils.exceptions.JsonParseException;
+import com.emazon.user.adapters.driving.http.utils.exceptions.HttpJsonParserException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-public class JsonParser {
+public class JsonConversionException {
 
-    private JsonParser(){
+    private JsonConversionException(){
         throw new IllegalStateException("Utility class");
     }
 
@@ -15,7 +15,7 @@ public class JsonParser {
             ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
             return mapper.writeValueAsString(obj);
         } catch (Exception e) {
-            throw new JsonParseException(e);
+            throw new HttpJsonParserException(e);
         }
     }
 }

@@ -71,4 +71,18 @@ class UserJpaAdapterTest {
         verify(userRepository).existsByEmail("email@email.com");
         assertTrue(exists);
     }
+
+    @Test
+    void getUserByEmail() {
+        String email = "email@email.com";
+        RoleEntity roleEntity = new RoleEntity(1L, RoleName.WAREHOUSE_ASSISTANT);
+        UserEntity userEntity = new UserEntity("xd", "name", "lastname", "0000000000", LocalDateTime.of(1,1,1,1,1,1), "+5555555555555", "email@email.com", "password", roleEntity);
+        User user = new User("xd", "name", "lastname", "0000000000", LocalDateTime.of(1,1,1,1,1,1), "+5555555555555", "email@email.com", "password", new Role(1L, RoleName.WAREHOUSE_ASSISTANT));
+        when(userEntityMapper.toUser(userEntity)).thenReturn(user);
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(userEntity));
+        User returnedUser = userJpaAdapter.getUserByEmail(email);
+        verify(userRepository).findByEmail("email@email.com");
+        assertEquals(user.getId(), returnedUser.getId());
+        assertEquals(user.getEmail(), returnedUser.getEmail());
+    }
 }

@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface UserServicePort {
     void createWarehouseAssistant(User user);
+    User getUserByEmail(String email);
 }
